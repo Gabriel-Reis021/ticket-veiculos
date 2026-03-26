@@ -1,0 +1,93 @@
+{
+    "001": {
+        "morador": "João Silva",
+        "apartamento": "101",
+        "placa": "ABC-1234",
+        "modelo": "Honda Civic",
+        "data-inscricao": "24/03/2026 14:30:00",
+        "entrada": null,
+        "saida": null
+    },
+    "002": {
+        "morador": "Maria Santos",
+        "apartamento": "203",
+        "placa": "XYZ-5678",
+        "modelo": "Toyota Corolla",
+        "data-inscricao": "24/03/2026 15:00:00",
+        "entrada": "24/03/2026 16:00:00",
+        "saida": null
+    },
+    "003": {
+        "morador": "Pedro Reis",
+        "apartamento": "AP09",
+        "placa": "LLMDGB7",
+        "modelo": "Fiat Uno",
+        "data-inscricao": "24/03/2026 14:38:56",
+        "entrada": null,
+        "saida": null
+    },
+    "005": {
+        "morador": "Renato Carvalho",
+        "apartamento": "ap03",
+        "placa": "LLSDAJ3",
+        "modelo": "Mobi",
+        "data-inscricao": "24/03/2026 14:44:21",
+        "entrada": null,
+        "saida": null
+    },
+    "004": {
+        "morador": "Maria Eduarda",
+        "apartamento": "AP11",
+        "placa": "JSCLT4D",
+        "modelo": "Fiesta",
+        "data-inscricao": "24/03/2026 15:13:18",
+        "entrada": null,
+        "saida": null
+    },
+    "006": {
+        "morador": "Brunno Alves Dos Santos",
+        "apartamento": "AP10",
+        "placa": "LTHGE3BR",
+        "modelo": "Volkswagen Nivus",
+        "data-inscricao": "25/03/2026 10:44:43",
+        "entrada": [
+            "25/03/2026 10:45:42"
+        ],
+        "saida": [
+            "25/03/2026 10:45:47"
+        ]
+    },
+    "007": {
+        "morador": "Bruno Resende",
+        "apartamento": "AP11",
+        "placa": "LTDMC4D",
+        "modelo": "Volvo XC60",
+        "data-inscricao": "25/03/2026 14:18:01",
+        "entrada": [
+            "25/03/2026 14:18:28"
+        ],
+        "saida": null
+    },
+    "008": {
+        "morador": "Bruno Jaques",
+        "apartamento": "AP05",
+        "placa": "LTSC8DT",
+        "modelo": "Jeep Compass",
+        "data-inscricao": "25/03/2026 21:09:02",
+        "entrada": [
+            "25/03/2026 21:10:12"
+        ],
+        "saida": null
+    },
+    "009": {
+        "morador": "Murilo Catussi",
+        "apartamento": "AP22",
+        "placa": "GHDTF5D",
+        "modelo": "Byd Seal",
+        "data-inscricao": "25/03/2026 21:09:55",
+        "entrada": [
+            "25/03/2026 21:10:35"
+        ],
+        "saida": null
+    }
+}
