@@ -4,7 +4,6 @@ from models.veiculo import Veiculo
 # Estado compartilhado do sistema (dicionário central de veículos)
 dicionario: dict = {}
 
-
 def tempo_real() -> str:
     return datetime.now().strftime('%d/%m/%Y %H:%M:%S')
 
@@ -47,7 +46,7 @@ def buscar_veiculo():
 
 
 def listar_veiculos():
-    print("--- Listar Veículos ---")
+    print(6*"="+" Listar Veículos "+6*"=")
     if not dicionario:
         print("Nenhum veículo cadastrado.")
         return
@@ -68,7 +67,7 @@ def listar_veiculos():
 
 
 def verificar_tag():
-    print("--- Verificar tag ---")
+    print(6*"="+" Verificar TAG "+6*"=")
     tag = input("Digite a tag do veículo: ").strip()
     veiculo = dicionario.get(tag)
 
@@ -81,3 +80,16 @@ def verificar_tag():
         print(f"Apartamento: {veiculo['apartamento']}")
         print(f"Placa: {veiculo['placa']}")
         print(f"Modelo: {veiculo['modelo']}")
+
+
+def remover_veiculo():
+    print(6*"="+" Remover Veiculo "+6*"=")
+    tag = input("Digite a tag do veículo: ").strip()
+    veiculo = dicionario.get(tag)
+
+    if not veiculo:
+        print(f"Tag '{tag}' não encontrada. Cadastre o veículo primeiro")
+        return
+    else:
+        veiculo_removido = dicionario.pop(tag)
+        print(f"Veiculo removido com sucesso: {veiculo_removido} ")

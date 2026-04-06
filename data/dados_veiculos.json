@@ -89,5 +89,14 @@
             "25/03/2026 21:10:35"
         ],
         "saida": null
+    },
+    "010": {
+        "morador": "Larissa Alexandra",
+        "apartamento": "AP10",
+        "placa": "DDSTV3A",
+        "modelo": "Fiat Siena",
+        "data-inscricao": "06/04/2026 14:39:11",
+        "entrada": null,
+        "saida": null
     }
 }
