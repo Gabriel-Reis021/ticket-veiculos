@@ -20,7 +20,8 @@ def menu():
         print("5 - Listar veículos")
         print("6 - Relatório de entrada e saída")
         print("7 - Verificar TAG")
-        print("8 - Remover Veículo")
+        print("8 - Editar TAG ")
+        print("7 - Remover Veículo")
 
         while True:
             try:
@@ -53,6 +54,8 @@ def menu():
         elif get_opcao == 7:
             cd.verificar_tag()
         elif get_opcao == 8:
+            cd.editar()
+        elif get_opcao == 9:
             cd.remover_veiculo()
         else:
             print("Opção inválida!")

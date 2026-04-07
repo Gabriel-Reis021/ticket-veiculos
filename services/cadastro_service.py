@@ -83,6 +83,7 @@ def verificar_tag():
 
 
 def remover_veiculo():
+
     print(6*"="+" Remover Veiculo "+6*"=")
     tag = input("Digite a tag do veículo: ").strip()
     veiculo = dicionario.get(tag)
@@ -93,3 +94,63 @@ def remover_veiculo():
     else:
         veiculo_removido = dicionario.pop(tag)
         print(f"Veiculo removido com sucesso: {veiculo_removido} ")
+
+def editar():
+     
+    print(6*"="+" Editar Veiculo "+6*"=")
+
+    #loop até encontrar uma tag válida
+    while True:
+        tag = input("Digite a tag que deseja editar: ").strip()
+        tag_capturada = dicionario.get(tag)
+
+        if not tag_capturada:
+            print(f"Tag '{tag}' não encontrada. Cadastre ou insira uma tag válida")
+            continue
+        else:
+            break # sai do loop quando achar uma tag válida
+
+    #loop de edição
+    print(6*"="+" Modo de edição  "+6*"=")
+    
+    veiculo = dicionario[tag]
+
+    print("\n--- Dados atuais do veículo ---")
+    print(f"Morador: {veiculo['morador']}")
+    print(f"Apartamento: {veiculo['apartamento']}")
+    print(f"Placa: {veiculo['placa']}")
+    print(f"Modelo: {veiculo['modelo']}")
+    
+    while True:
+        print("\nDigite (0) para sair")
+        print("Digite (1) para editar o morador")
+        print("Digite (2) para editar apartamento")
+        print("Digite (3) para editar placa do veículo")
+        print("Digite (4) para editar modelo do veículo")
+        
+        try:
+            opcao = int(input("Digite a opção que deseja executar: "))
+        except ValueError:
+            print("Digite apenas números!")
+            continue
+        
+        if opcao == 0:
+            break
+        elif opcao == 1:
+            novo_morador = input("Digite o nome do novo morador: ")
+            dicionario[tag]["morador"] = novo_morador
+        elif opcao == 2:
+            novo_apartamento = input("Digite o número do novo apartamento: ")
+            dicionario[tag]["apartamento"] = novo_apartamento
+        elif opcao == 3:
+            nova_placa = input("Digite a nova placa: ")
+            dicionario[tag]["placa"] = nova_placa
+        elif opcao == 4:
+            novo_modelo = input("Digite o nome do novo modelo do veículo: ")
+            dicionario[tag]["modelo"] = novo_modelo
+        else:
+            print("Opção inválida")
+    
+    print(f"TAG atualizada com sucesso: {dicionario[tag]}")
+
+    

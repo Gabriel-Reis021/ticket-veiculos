@@ -98,5 +98,23 @@
         "data-inscricao": "06/04/2026 14:39:11",
         "entrada": null,
         "saida": null
+    },
+    "011": {
+        "morador": "Gabriel Dos Santos Reis",
+        "apartamento": "AP11",
+        "placa": "LTMZT3D",
+        "modelo": "La Ferrari",
+        "data-inscricao": "06/04/2026 21:55:22",
+        "entrada": null,
+        "saida": null
+    },
+    "012": {
+        "morador": "Angélica Mattos",
+        "apartamento": "AP15",
+        "placa": "HSTCN4F",
+        "modelo": "Jeep Renegade",
+        "data-inscricao": "06/04/2026 22:24:34",
+        "entrada": null,
+        "saida": null
     }
 }
