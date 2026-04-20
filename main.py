@@ -1,6 +1,7 @@
 import services.cadastro_service as cd
 import services.entrada_saida_service as es
 import repositories.json_repository as db
+import repositories.mysql_repository as db
 from time import sleep
 
 
