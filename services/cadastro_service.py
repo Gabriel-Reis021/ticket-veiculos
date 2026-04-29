@@ -1,8 +1,6 @@
 from datetime import datetime
 from models.veiculo import Veiculo
-
-# Estado compartilhado do sistema (dicionário central de veículos)
-dicionario: dict = {}
+import repositories.mysql_repository as db
 
 def tempo_real() -> str:
     return datetime.now().strftime('%d/%m/%Y %H:%M:%S')
@@ -17,8 +15,8 @@ def cadastrar_veiculo():
 
     for i in range(qtd_veiculos):
         while True:
-            tag = input(f"Digite a {i+1}º tag do veículo: ")
-            if tag in dicionario:
+            tag = input(f"Digite a {i+1}º tag do veículo: ").strip()
+            if db.tag_existe(tag):
                 print("Tag já cadastrada!")
             else:
                 break
@@ -26,20 +24,21 @@ def cadastrar_veiculo():
         apartamento = input("Digite o apartamento: ")
         placa = input(f"Digite a placa do {i+1}º veículo: ")
         modelo = input(f"Digite o modelo do {i+1}º veículo: ")
-        atual = tempo_real()
-
-        veiculo = Veiculo(tag, morador, apartamento, placa, modelo, atual)
-        dicionario[tag] = veiculo.to_dict()
+        
+        db.cadastrar_veiculos(tag, morador, apartamento, placa, modelo)
 
 
 def buscar_veiculo():
     while True:
         print(6*"="+" Busca de veículo "+6*"=")
-        tag = input("Digite a tag do veículo: ")
+        tag = input("Digite a tag do veículo: ").strip()
 
-        if tag in dicionario:
-            print(f"{dicionario[tag]['modelo']}")
-            print(f"{dicionario[tag]['placa']}")
+        veiculo = db.buscar_veiculos(tag)
+        if veiculo:
+            print(f"Modelo: {veiculo['modelo']}")
+            print(f"Placa: {veiculo['placa']}")
+            print(f"Morador: {veiculo['morador']}")
+            print(f"Apartamento: {veiculo['apartamento']}")
             break
         else:
             print("Carro nao encontrado")
@@ -47,29 +46,40 @@ def buscar_veiculo():
 
 def listar_veiculos():
     print(6*"="+" Listar Veículos "+6*"=")
-    if not dicionario:
+    
+    conn = db.conectar_banco()
+    if not conn:
+        print("Erro ao conectar ao banco de dados.")
+        return None
+    
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM veiculos")
+    resultados = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    
+    if not resultados:
         print("Nenhum veículo cadastrado.")
-        return
+        return None
 
     try:
         import pandas as pd
-        df_veiculos = pd.DataFrame.from_dict(dicionario, orient='index')
-        df_veiculos.reset_index(inplace=True)
-        df_veiculos.rename(columns={'index': 'tag'}, inplace=True)
+        df_veiculos = pd.DataFrame(resultados)
         print(df_veiculos)
         return df_veiculos
     except Exception:
         print(f"{'Tag':<10} {'Morador':<15} {'Apartamento':<12} {'Placa':<10} {'Modelo':<15}")
         print("-" * 70)
-        for tag, dados in dicionario.items():
-            print(f"{tag:<10} {dados['morador']:<15} {dados['apartamento']:<12} {dados['placa']:<10} {dados['modelo']:<15}")
-        print(f"\nTotal: {len(dicionario)} veículos cadastrados.")
+        for veiculo in resultados:
+            print(f"{veiculo['tag']:<10} {veiculo['morador']:<15} {veiculo['apartamento']:<12} {veiculo['placa']:<10} {veiculo['modelo']:<15}")
+        print(f"\nTotal: {len(resultados)} veículos cadastrados.")
+        return None
 
 
 def verificar_tag():
     print(6*"="+" Verificar TAG "+6*"=")
     tag = input("Digite a tag do veículo: ").strip()
-    veiculo = dicionario.get(tag)
+    veiculo = db.buscar_veiculos(tag)
 
     if not veiculo:
         print(f"Tag '{tag}' não encontrada. Cadastre o veículo primeiro")
@@ -80,29 +90,27 @@ def verificar_tag():
         print(f"Apartamento: {veiculo['apartamento']}")
         print(f"Placa: {veiculo['placa']}")
         print(f"Modelo: {veiculo['modelo']}")
+        print(f"Data de inscrição: {veiculo['data_inscricao']}")
 
 
 def remover_veiculo():
-
     print(6*"="+" Remover Veiculo "+6*"=")
     tag = input("Digite a tag do veículo: ").strip()
-    veiculo = dicionario.get(tag)
+    veiculo = db.buscar_veiculos(tag)
 
     if not veiculo:
         print(f"Tag '{tag}' não encontrada. Cadastre o veículo primeiro")
         return
     else:
-        veiculo_removido = dicionario.pop(tag)
-        print(f"Veiculo removido com sucesso: {veiculo_removido} ")
+        db.remover_veiculos(tag)
 
 def editar():
-     
     print(6*"="+" Editar Veiculo "+6*"=")
 
     #loop até encontrar uma tag válida
     while True:
         tag = input("Digite a tag que deseja editar: ").strip()
-        tag_capturada = dicionario.get(tag)
+        tag_capturada = db.buscar_veiculos(tag)
 
         if not tag_capturada:
             print(f"Tag '{tag}' não encontrada. Cadastre ou insira uma tag válida")
@@ -113,7 +121,7 @@ def editar():
     #loop de edição
     print(6*"="+" Modo de edição  "+6*"=")
     
-    veiculo = dicionario[tag]
+    veiculo = tag_capturada
 
     print("\n--- Dados atuais do veículo ---")
     print(f"Morador: {veiculo['morador']}")
@@ -138,19 +146,24 @@ def editar():
             break
         elif opcao == 1:
             novo_morador = input("Digite o nome do novo morador: ")
-            dicionario[tag]["morador"] = novo_morador
+            db.editar_veiculos(tag, "morador", novo_morador)
         elif opcao == 2:
             novo_apartamento = input("Digite o número do novo apartamento: ")
-            dicionario[tag]["apartamento"] = novo_apartamento
+            db.editar_veiculos(tag, "apartamento", novo_apartamento)
         elif opcao == 3:
             nova_placa = input("Digite a nova placa: ")
-            dicionario[tag]["placa"] = nova_placa
+            db.editar_veiculos(tag, "placa", nova_placa)
         elif opcao == 4:
             novo_modelo = input("Digite o nome do novo modelo do veículo: ")
-            dicionario[tag]["modelo"] = novo_modelo
+            db.editar_veiculos(tag, "modelo", novo_modelo)
         else:
             print("Opção inválida")
     
-    print(f"TAG atualizada com sucesso: {dicionario[tag]}")
+    veiculo_atualizado = db.buscar_veiculos(tag)
+    print(f"\nTAG atualizada com sucesso!")
+    print(f"Morador: {veiculo_atualizado['morador']}")
+    print(f"Apartamento: {veiculo_atualizado['apartamento']}")
+    print(f"Placa: {veiculo_atualizado['placa']}")
+    print(f"Modelo: {veiculo_atualizado['modelo']}")
 
     
